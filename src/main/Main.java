@@ -7,12 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
-import fileio.CardInput;
-import fileio.Coordinates;
-import fileio.GameInput;
 import fileio.Input;
 
-import java.nio.file.Watchable;
 import java.util.Collections;
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +18,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
+
+import static implement.CardUsesAbility.cardUsesAbility;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -314,7 +312,16 @@ public final class Main {
                     }
                 }
                 if (command.equals("getCardsOnTable")) {
-                    output.addObject().put("command", "getCardsOnTable").putPOJO("output", arena.getMap());
+                    Arena new_arena = new Arena();
+                    new_arena.setMap(new ArrayList<>());
+                    for(int k = 0; k < arena.getMap().size(); k++){
+                        new_arena.getMap().add(new ArrayList<>());
+                    }
+                    for (int k = 0; k < arena.getMap().size(); k++){
+                        for (int k2 = 0; k2 < arena.getMap().get(k).size(); k2  ++)
+                            new_arena.getMap().get(k).add(new Minion(arena.getMap().get(k).get(k2)));
+                    }
+                    output.addObject().put("command", "getCardsOnTable").putPOJO("output", new_arena.getMap());
                 }
                 if (command.equals("getEnvironmentCardsInHand")){
                     int player_idx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
@@ -554,7 +561,7 @@ public final class Main {
 
                 }
                 if (command.equals("cardUsesAbility")){
-
+                    cardUsesAbility(inputData, output, arena, i, j);
                 }
             }
         }
