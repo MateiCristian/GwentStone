@@ -81,6 +81,8 @@
   "command" : "getFrozenCardsOnTable",
   "output" : [ ]
 }, {
+  "gameEnded" : "Player two killed the enemy hero."
+}, {
   "command" : "getCardsOnTable",
   "output" : [ [ {
     "mana" : 1,
@@ -134,6 +136,15 @@
     "attackDamage" : 0
   } ]
 }, {
+  "command" : "getTotalGamesPlayed",
+  "output" : 1
+}, {
+  "command" : "getPlayerTwoWins",
+  "output" : 1
+}, {
+  "command" : "getPlayerOneWins",
+  "output" : 0
+}, {
   "command" : "getPlayerTurn",
   "output" : 2
 }, {
@@ -167,12 +178,12 @@
   "x" : 1,
   "y" : 0,
   "output" : {
-    "mana" : 2,
-    "description" : "Standard card: Death incarnate. No better time to die than now.",
-    "colors" : [ "Orange", "Red", "Black" ],
-    "name" : "The Ripper",
-    "health" : 3,
-    "attackDamage" : 6
+    "mana" : 1,
+    "description" : "Standard card: When he is near, close your eyes. They betray your mind.",
+    "colors" : [ "Yellow", "Orange", "Red" ],
+    "name" : "Miraj",
+    "health" : 4,
+    "attackDamage" : 5
   }
 }, {
   "command" : "getPlayerMana",
@@ -194,6 +205,18 @@
     "name" : "Heart Hound"
   } ]
 }, {
+  "command" : "getCardAtPosition",
+  "x" : 2,
+  "y" : 0,
+  "output" : {
+    "mana" : 2,
+    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
+    "colors" : [ "Brown", "Blue" ],
+    "name" : "Warden",
+    "health" : 1,
+    "attackDamage" : 7
+  }
+}, {
   "command" : "getFrozenCardsOnTable",
   "output" : [ ]
 }, {
@@ -212,6 +235,25 @@
 }, {
   "command" : "getFrozenCardsOnTable",
   "output" : [ ]
+}, {
+  "command" : "useAttackHero",
+  "error" : "Attacked card is not of type 'Tank'.",
+  "cardAttacker" : {
+    "x" : 1,
+    "y" : 1
+  }
+}, {
+  "command" : "getCardAtPosition",
+  "x" : 2,
+  "y" : 0,
+  "output" : {
+    "mana" : 2,
+    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
+    "colors" : [ "Brown", "Blue" ],
+    "name" : "Warden",
+    "health" : 1,
+    "attackDamage" : 7
+  }
 }, {
   "command" : "getEnvironmentCardsInHand",
   "playerIdx" : 1,
@@ -233,22 +275,22 @@
     "name" : "Heart Hound"
   } ]
 }, {
+  "command" : "getCardAtPosition",
+  "x" : 2,
+  "y" : 0,
+  "output" : {
+    "mana" : 2,
+    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
+    "colors" : [ "Brown", "Blue" ],
+    "name" : "Warden",
+    "health" : 1,
+    "attackDamage" : 5
+  }
+}, {
+  "gameEnded" : "Player one killed the enemy hero."
+}, {
   "command" : "getCardsOnTable",
   "output" : [ [ {
-    "mana" : 2,
-    "description" : "Premium card: The will of Gods has been spoken, obey and you shall be saved...or not.",
-    "colors" : [ "Green", "Yellow", "Blue" ],
-    "name" : "Disciple",
-    "health" : 1,
-    "attackDamage" : 0
-  }, {
-    "mana" : 2,
-    "description" : "Premium card: The will of Gods has been spoken, obey and you shall be saved...or not.",
-    "colors" : [ "Green", "Yellow", "Blue" ],
-    "name" : "Disciple",
-    "health" : 2,
-    "attackDamage" : 0
-  }, {
     "mana" : 2,
     "description" : "Premium card: Nobody suspects an outcast, not even the Gods.",
     "colors" : [ "Black", "White", "Red" ],
@@ -256,20 +298,6 @@
     "health" : 3,
     "attackDamage" : 0
   } ], [ {
-    "mana" : 2,
-    "description" : "Standard card: Death incarnate. No better time to die than now.",
-    "colors" : [ "Orange", "Red", "Black" ],
-    "name" : "The Ripper",
-    "health" : 2,
-    "attackDamage" : 6
-  }, {
-    "mana" : 2,
-    "description" : "Premium card: Ravished by the winds of hell, no soul is to be forgiven.",
-    "colors" : [ "Orange", "Red", "Black" ],
-    "name" : "The Ripper",
-    "health" : 3,
-    "attackDamage" : 6
-  }, {
     "mana" : 1,
     "description" : "Standard card: When he is near, close your eyes. They betray your mind.",
     "colors" : [ "Yellow", "Orange", "Red" ],
@@ -283,14 +311,14 @@
     "name" : "The Ripper",
     "health" : 3,
     "attackDamage" : 6
-  } ], [ ], [ {
+  } ], [ {
     "mana" : 2,
-    "description" : "Premium card: Fear him. Your last breath is now.",
-    "colors" : [ "Purple", "Yellow" ],
-    "name" : "Berserker",
+    "description" : "Standard card: He has seen everything, his mind has never been asleep since the making of the realm.",
+    "colors" : [ "Brown", "Blue" ],
+    "name" : "Warden",
     "health" : 1,
     "attackDamage" : 5
-  }, {
+  } ], [ {
     "mana" : 2,
     "description" : "Standard card: Trained by the best, nothing will catch him off-guard.",
     "colors" : [ "Black", "Grey", "Blue" ],
@@ -323,4 +351,13 @@
     "colors" : [ "Green", "Black" ],
     "name" : "Heart Hound"
   } ]
+}, {
+  "command" : "getTotalGamesPlayed",
+  "output" : 2
+}, {
+  "command" : "getPlayerTwoWins",
+  "output" : 1
+}, {
+  "command" : "getPlayerOneWins",
+  "output" : 1
 } ]

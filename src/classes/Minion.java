@@ -1,6 +1,7 @@
 package classes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import fileio.CardInput;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,16 @@ public class Minion extends Cards{
         this.health = health;
     }
     public Minion(Minion min){
+        this.health = min.getHealth();
+        this.attackDamage = min.getAttackDamage();
+        this.setMana(min.getMana());
+        this.setName(min.getName());
+        this.setColors(min.getColors());
+        this.setDescription(min.getDescription());
+        this.frozen = min.frozen;
+        this.attacked_tur = min.attacked_tur;
+    }
+    public Minion(CardInput min){
         this.health = min.getHealth();
         this.attackDamage = min.getAttackDamage();
         this.setMana(min.getMana());

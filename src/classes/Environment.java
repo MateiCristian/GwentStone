@@ -1,5 +1,7 @@
 package classes;
 
+import fileio.CardInput;
+
 import java.util.ArrayList;
 
 public class Environment extends Cards{
@@ -8,6 +10,12 @@ public class Environment extends Cards{
 
     public Environment(int mana, String name, ArrayList<String> colors, String description) {
         super(mana, name, colors, description);
+    }
+    public Environment(Environment environment){
+        super(environment.getMana(), environment.getName(), environment.getColors(), environment.getDescription());
+    }
+    public Environment(CardInput environment){
+        super(environment.getMana(), environment.getName(), environment.getColors(), environment.getDescription());
     }
 
     public int getMana() {

@@ -20,6 +20,8 @@ import java.util.Objects;
 import java.util.Random;
 
 import static implement.CardUsesAbility.cardUsesAbility;
+import static implement.UseAttackHero.useAttackHero;
+import static implement.UseHeroAbility.useHeroAbility;
 
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
@@ -80,6 +82,9 @@ public final class Main {
         for(int k = 0; k < 4; k++){
             arena.getMap().add(new ArrayList<>());
         }
+        int player1_wins = 0;
+        int player2_wins = 0;
+
         for(int i = 0; i < inputData.getGames().size(); i ++){
             int nr_rounds = 0;
             int nr_turs = 1;
@@ -121,22 +126,26 @@ public final class Main {
                 String command = inputData.getGames().get(i).getActions().get(j).getCommand();
                 if (command.equals("getPlayerDeck")){
                     int player_id = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
+                    Playerv2 c_player1 = new Playerv2(player1);
+                    Playerv2 c_player2 = new Playerv2(player2);
                     if(player_id == 1){
                         output.addObject().put("command", "getPlayerDeck").put("playerIdx", player_id)
-                                .putPOJO("output", player1.getDeck());
+                                .putPOJO("output", c_player1.getDeck());
                     }else {
                         output.addObject().put("command", "getPlayerDeck").put("playerIdx", player_id)
-                                .putPOJO("output", player2.getDeck());
+                                .putPOJO("output", c_player2.getDeck());
                     }
                 }
                 if (command.equals("getPlayerHero")){
+                    Playerv2 c_player1 = new Playerv2(player1);
+                    Playerv2 c_player2 = new Playerv2(player2);
                     int hero_idx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
                     if (hero_idx == 1){
                         output.addObject().put("command", "getPlayerHero").put("playerIdx", hero_idx)
-                                .putPOJO("output", player1.getHero());
+                                .putPOJO("output", c_player1.getHero());
                     }else {
                         output.addObject().put("command", "getPlayerHero").put("playerIdx", hero_idx)
-                                .putPOJO("output", player2.getHero());
+                                .putPOJO("output", c_player2.getHero());
                     }
                 }
                 if (command.equals("getPlayerTurn")){
@@ -167,6 +176,7 @@ public final class Main {
                             for (int c = 0; c < arena.getMap().get(l).size(); c++){
                                 arena.getMap().get(l).get(c).frozen = 0;
                                 arena.getMap().get(l).get(c).attacked_tur = 0;
+                                player1.getHero().attacked_tur = 0;
                             }
                         }
                         starting_player = 2;
@@ -175,6 +185,7 @@ public final class Main {
                             for (int c = 0; c < arena.getMap().get(l).size(); c++){
                                 arena.getMap().get(l).get(c).frozen = 0;
                                 arena.getMap().get(l).get(c).attacked_tur = 0;
+                                player2.getHero().attacked_tur = 0;
                             }
                         }
                         starting_player = 1;
@@ -303,12 +314,14 @@ public final class Main {
                 }
                 if (command.equals("getPlayerMana")) {
                     int player_idx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
+                    Playerv2 c_player1 = new Playerv2(player1);
+                    Playerv2 c_player2 = new Playerv2(player2);
                     if(player_idx == 1){
                         output.addObject().put("command", "getPlayerMana").put("playerIdx", player_idx)
-                                .putPOJO("output", player1.getMana());
+                                .putPOJO("output", c_player1.getMana());
                     }else {
                         output.addObject().put("command", "getPlayerMana").put("playerIdx", player_idx)
-                                .putPOJO("output", player2.getMana());
+                                .putPOJO("output", c_player2.getMana());
                     }
                 }
                 if (command.equals("getCardsOnTable")) {
@@ -435,10 +448,7 @@ public final class Main {
                     }
                     if (row < arena.getMap().size() && column < arena.getMap().get(row).size()) {
                         if (arena.getMap().get(row).get(column) != null) {
-                            Minion new_min = new Minion(arena.getMap().get(row).get(column).getMana(),
-                                    arena.getMap().get(row).get(column).getName(), arena.getMap().get(row).get(column).getColors(),
-                                    arena.getMap().get(row).get(column).getDescription(), arena.getMap().get(row).get(column).getAttackDamage(),
-                                    arena.getMap().get(row).get(column).getHealth());
+                            Minion new_min = new Minion(arena.getMap().get(row).get(column));
                             output.addObject().put("command", "getCardAtPosition").put("x", row)
                                     .put("y", column).putPOJO("output", new_min);
                         } else {
@@ -563,7 +573,38 @@ public final class Main {
                 if (command.equals("cardUsesAbility")){
                     cardUsesAbility(inputData, output, arena, i, j);
                 }
+                if (command.equals("useAttackHero")) {
+                    int x = useAttackHero(inputData, output, arena, i, j, player1, player2);
+                    if (x == 1){
+                        player1_wins ++;
+                    }
+                    if (x == -1){
+                        player2_wins ++;
+                    }
+                }
+                if (command.equals("useHeroAbility")){
+                    int affected_row = inputData.getGames().get(i).getActions().get(j).getAffectedRow();
+                    if (starting_player == 1){
+                        useHeroAbility(inputData, output, arena, affected_row, player1, 1);
+                    }else {
+                        useHeroAbility(inputData, output, arena, affected_row, player2, 2);
+                    }
+                }
+                if (command.equals("getPlayerOneWins")){
+                    output.addObject().put("command", "getPlayerOneWins")
+                            .put("output", player1_wins);
+                }
+                if (command.equals("getPlayerTwoWins")){
+                    output.addObject().put("command", "getPlayerTwoWins")
+                            .put("output", player2_wins);
+                }
+                if (command.equals("getTotalGamesPlayed")){
+                    output.addObject().put("command", "getTotalGamesPlayed")
+                            .put("output", player1_wins + player2_wins);
+                }
             }
+            for (int c = 0; c < 4; c++)
+                arena.getMap().get(c).clear();
         }
 
         ObjectWriter objectWriter = objectMapper.writerWithDefaultPrettyPrinter();

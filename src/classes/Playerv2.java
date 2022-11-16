@@ -12,7 +12,13 @@ public class Playerv2 {
 
     public Playerv2() {
     }
-
+    public Playerv2(Playerv2 player){
+        this.setHero(new Hero(player.getHero()));
+        this.setMana(player.getMana());
+        this.setNrCardsInDeck(player.getNrCardsInDeck());
+        this.setDeck(player.getDeck());
+        this.setHand(player.getHand());
+    }
     public int getNrCardsInDeck() {
         return nrCardsInDeck;
     }

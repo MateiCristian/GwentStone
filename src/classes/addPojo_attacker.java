@@ -1,17 +1,10 @@
 package classes;
 
-public class addPojo_coordinates {
+public class addPojo_attacker {
     String command;
     String error;
-    Coord cardAttacked, cardAttacker;
-
-    public addPojo_coordinates(String command, String error, Coord cardAttacked, Coord cardAttacker) {
-        this.command = command;
-        this.error = error;
-        this.cardAttacked = cardAttacked;
-        this.cardAttacker = cardAttacker;
-    }
-    public addPojo_coordinates(String command, String error, Coord cardAttacker) {
+    Coord cardAttacker;
+    public addPojo_attacker(String command, String error, Coord cardAttacker) {
         this.command = command;
         this.error = error;
         this.cardAttacker = cardAttacker;
@@ -31,14 +24,6 @@ public class addPojo_coordinates {
 
     public void setError(String error) {
         this.error = error;
-    }
-
-    public Coord getCardAttacked() {
-        return cardAttacked;
-    }
-
-    public void setCardAttacked(Coord cardAttacked) {
-        this.cardAttacked = cardAttacked;
     }
 
     public Coord getCardAttacker() {

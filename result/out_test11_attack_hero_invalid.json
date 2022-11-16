@@ -28,7 +28,14 @@
     "description" : "Standard card: Exact precision is her mantra, emotion is for the weak.",
     "colors" : [ "Black", "Red" ],
     "name" : "Empress Thorina",
-    "health" : 30
+    "health" : 18
+  }
+}, {
+  "command" : "useAttackHero",
+  "error" : "Attacker card is frozen.",
+  "cardAttacker" : {
+    "x" : 2,
+    "y" : 1
   }
 }, {
   "command" : "getCardsInHand",
@@ -78,7 +85,21 @@
     "description" : "Standard card: Exact precision is her mantra, emotion is for the weak.",
     "colors" : [ "Black", "Red" ],
     "name" : "Empress Thorina",
-    "health" : 30
+    "health" : 18
+  }
+}, {
+  "command" : "useAttackHero",
+  "error" : "Attacked card is not of type 'Tank'.",
+  "cardAttacker" : {
+    "x" : 1,
+    "y" : 1
+  }
+}, {
+  "command" : "useAttackHero",
+  "error" : "Attacker card has already attacked this turn.",
+  "cardAttacker" : {
+    "x" : 3,
+    "y" : 1
   }
 }, {
   "command" : "getPlayerMana",
