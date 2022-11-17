@@ -4,40 +4,57 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 
-public class Hero extends Cards{
-    int health;
+public final class Hero extends Cards {
+    private int health = 30;
     @JsonIgnore
-    public int attacked_tur;
-    public Hero(int mana, String name, ArrayList<String> colors, String description, int health) {
+    private int attackedtur;
+
+    public Hero(final int mana, final String name, final ArrayList<String> colors,
+                final String description, final int health) {
         super(mana, name, colors, description);
         this.health = health;
     }
-    public Hero(Hero hero){
+
+    public Hero(final Hero hero) {
         super(hero.getMana(), hero.getName(), hero.getColors(), hero.getDescription());
         this.health = hero.getHealth();
-        this.attacked_tur = hero.attacked_tur;
-    }
-    public Hero() {
-        health = 30;
+        this.attackedtur = hero.attackedtur;
     }
 
+    public Hero() {
+
+    }
+
+    /**
+     * getHealth returns health
+     * @return
+     */
     public int getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    /**
+     * setHealth sets hero health
+     * @param health
+     */
+    public void setHealth(final int health) {
         this.health = health;
     }
+
+    /**
+     * getAttackedtur returns attackedtur
+     * 1 if hero attacked this round and 0 if not
+     * @return
+     */
+    public int getAttackedtur() {
+        return attackedtur;
+    }
+
+    /**
+     * setAttackedtur sets value for attackedtur
+     * @param attackedtur
+     */
+    public void setAttackedtur(final int attackedtur) {
+        this.attackedtur = attackedtur;
+    }
 }
-//class LordRoyce extends Hero{
-//
-//}
-//class EmpressThorina extends Hero{
-//
-//}
-//class KingMudface extends Hero{
-//
-//}
-//class GeneralKocioraw extends Hero{
-//
-//}

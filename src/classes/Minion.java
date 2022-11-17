@@ -5,21 +5,24 @@ import fileio.CardInput;
 
 import java.util.ArrayList;
 
-public class Minion extends Cards{
-    int health;
-    int attackDamage;
+public class Minion extends Cards {
+    private int health;
+    private int attackDamage;
 
     @JsonIgnore
-    public int frozen;
+    private int frozen;
 
     @JsonIgnore
-    public int attacked_tur;
-    public Minion(int mana, String name, ArrayList<String> colors, String description, int attackDamage, int health) {
+    private int attackedtur;
+
+    public Minion(final int mana, final String name, final ArrayList<String> colors,
+                  final String description, final int attackDamage, final int health) {
         super(mana, name, colors, description);
         this.attackDamage = attackDamage;
         this.health = health;
     }
-    public Minion(Minion min){
+
+    public Minion(final Minion min) {
         this.health = min.getHealth();
         this.attackDamage = min.getAttackDamage();
         this.setMana(min.getMana());
@@ -27,9 +30,10 @@ public class Minion extends Cards{
         this.setColors(min.getColors());
         this.setDescription(min.getDescription());
         this.frozen = min.frozen;
-        this.attacked_tur = min.attacked_tur;
+        this.attackedtur = min.attackedtur;
     }
-    public Minion(CardInput min){
+
+    public Minion(final CardInput min) {
         this.health = min.getHealth();
         this.attackDamage = min.getAttackDamage();
         this.setMana(min.getMana());
@@ -37,77 +41,72 @@ public class Minion extends Cards{
         this.setColors(min.getColors());
         this.setDescription(min.getDescription());
     }
-    public Minion() {}
 
+    public Minion() {
+    }
+
+    /**
+     * getHealth returns the health of a minion
+     * @return
+     */
     public int getHealth() {
         return health;
     }
 
-    public void setHealth(int health) {
+    /**
+     * setHealth sets the health for a minion
+     * @param health
+     */
+    public void setHealth(final int health) {
         this.health = health;
     }
 
-    public int getAttacked_tur() {
-        return attacked_tur;
+    /**
+     * getAttackedtur returns attackedtur (1 if minion attacked
+     * already this round and 0 if not)
+     * @return
+     */
+    public int getAttackedtur() {
+        return attackedtur;
     }
 
-    public void setAttacked_tur(int attacked_tur) {
-        this.attacked_tur = attacked_tur;
+    /**
+     * seAttackedtur sets the attackedtur
+     * @param attackedtur
+     */
+    public void setAttackedtur(final int attackedtur) {
+        this.attackedtur = attackedtur;
     }
 
-    public void setAttackDamage(int attackDamage) {
+    /**
+     * setattackedDamage sets the attackedDamage
+     * @param attackDamage
+     */
+    public void setAttackDamage(final int attackDamage) {
         this.attackDamage = attackDamage;
     }
 
+    /**
+     * getFrozen returns if a minion is frozen
+     * @return
+     */
     public int getFrozen() {
         return frozen;
     }
 
-    public void setFrozen(int frozen) {
+    /**
+     * setFrozen sets the frozen propperty for a minion
+     * @param frozen
+     */
+    public void setFrozen(final int frozen) {
         this.frozen = frozen;
     }
 
+    /**
+     * getattackDamage returns attackDamage
+     * @return
+     */
     public int getAttackDamage() {
         return attackDamage;
     }
-
-    @Override
-    public String toString() {
-        return "Minion{" +
-                "mana=" + mana +
-                ", attackDamage=" + attackDamage +
-                ", health=" + health +
-                ", description='" + description + '\'' +
-                ", colors=" + colors +
-                ", name='" + name + '\'' +
-                '}';
-    }
 }
-
-//class Sentinel extends Minion{
-//
-//}
-//class Berserker extends Minion{
-//
-//    public Berserker(int mana, int health, int attackDamage, String description, ArrayList<String> colors, String name) {
-//        super(mana, health, attackDamage, description, colors, name);
-//    }
-//}
-//class Goliath extends Minion{
-//
-//}
-//class Warden extends Minion{
-//
-//}
-//class TheRipper extends Minion{
-//
-//}
-//class Miraj extends Minion{
-//
-//}
-//class TheCursedOne extends Minion{
-//
-//}
-//class Disciple extends Minion{
-//
-//}

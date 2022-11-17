@@ -4,71 +4,93 @@ import fileio.CardInput;
 
 import java.util.ArrayList;
 
-public class Environment extends Cards{
+public class Environment extends Cards {
     public Environment() {
     }
 
-    public Environment(int mana, String name, ArrayList<String> colors, String description) {
+    public Environment(final int mana, final String name,
+                       final ArrayList<String> colors, final String description) {
         super(mana, name, colors, description);
     }
-    public Environment(Environment environment){
-        super(environment.getMana(), environment.getName(), environment.getColors(), environment.getDescription());
-    }
-    public Environment(CardInput environment){
-        super(environment.getMana(), environment.getName(), environment.getColors(), environment.getDescription());
+
+    public Environment(final Environment environment) {
+        super(environment.getMana(), environment.getName(),
+                environment.getColors(), environment.getDescription());
     }
 
+    public Environment(final CardInput environment) {
+        super(environment.getMana(), environment.getName(),
+                environment.getColors(), environment.getDescription());
+    }
+
+    /**
+     * getMana returns mana
+     * @return
+     */
     public int getMana() {
-        return mana;
+        return super.getMana();
     }
-
-    public void setMana(int mana) {
-        this.mana = mana;
+    /**
+     * setMana sets mana
+     * @return
+     */
+    public void setMana(final int mana) {
+        super.setMana(super.getMana());
     }
-
+    /**
+     * getName returns name
+     * @return
+     */
     public String getName() {
-        return name;
+        return super.getName();
+    }
+    /**
+     * setName sets name
+     * @return
+     */
+    public void setName(final String name) {
+        super.setName(super.getName());
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
+    /**
+     * getDescription returns description
+     * @return
+     */
     public String getDescription() {
-        return description;
+        return super.getDescription();
     }
-
-    public void setDescription(String description) {
-        this.description = description;
+    /**
+     * setDescription sets description
+     * @return
+     */
+    public void setDescription(final String description) {
+        super.setDescription(super.getDescription());
     }
-
+    /**
+     * getColors returns all colors
+     * @return
+     */
     public ArrayList<String> getColors() {
-        return colors;
+        return super.getColors();
     }
-
-    public void setColors(ArrayList<String> colors) {
-        this.colors = colors;
+    /**
+     * setColors sets all colors
+     * @return
+     */
+    public void setColors(final ArrayList<String> colors) {
+        super.setColors(super.getColors());
     }
-
+    /**
+     * toString returns an Environment card with all the paramethers for print
+     * @return
+     */
     @Override
     public String toString() {
-        return "Environment{" +
-                "mana=" + mana +
-                ", description='" + description + '\'' +
-                ", colors=" + colors +
-                ", name='" + name + '\'' +
-                '}';
+        return "Environment{"
+                + "mana=" + super.getMana()
+                + ", description='" + super.getDescription() + '\''
+                + ", colors=" + super.getColors()
+                + ", name='" + super.getName() + '\''
+                + '}';
     }
 }
-//class Firestorm extends Environment{
-//    public Firestorm() {
-//    }
-//}
-//class Winterfell extends Environment{
-//    public Winterfell() {
-//    }
-//}
-//class HeartHound extends Environment{
-//    public HeartHound() {
-//    }
-//}

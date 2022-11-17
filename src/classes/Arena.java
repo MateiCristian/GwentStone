@@ -3,13 +3,21 @@ package classes;
 import java.util.ArrayList;
 
 public class Arena {
-    ArrayList<ArrayList<Minion>> map = new ArrayList<>(4);
+    private ArrayList<ArrayList<Minion>> map = new ArrayList<>();
 
+    /**
+     * getMap returns the game arena
+     * @return
+     */
     public ArrayList<ArrayList<Minion>> getMap() {
         return map;
     }
 
-    public void setMap(ArrayList<ArrayList<Minion>> map) {
+    /**
+     * setMap sets the values for a game arena
+     * @param map
+     */
+    public void setMap(final ArrayList<ArrayList<Minion>> map) {
         this.map = map;
     }
 }

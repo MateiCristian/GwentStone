@@ -1,48 +1,67 @@
 package classes;
 
-public class UseEnvironment {
-    public static void Environment(Arena arena, Environment card, int affected_row, Playerv2 p1, Playerv2 p2){
+public final class UseEnvironment {
+    private UseEnvironment() {
+    }
+
+    /**
+     * This method implements all the task
+     * arena is the game arena
+     * card is the using environment card
+     * affectedrow is the row where we will activate the card
+     * p1 is the player1
+     * p2 is the player2
+     * @param arena
+     * @param card
+     * @param affectedrow
+     * @param p1
+     * @param p2
+     */
+    public static void environment(final Arena arena, final Environment card,
+                                   final int affectedrow, final Playerv2 p1, final Playerv2 p2) {
         if (card.getName().equals("Firestorm")) {
-            for (int i = 0; i < arena.getMap().get(affected_row).size(); i++) {
-                arena.getMap().get(affected_row).get(i).setHealth(arena.getMap().get(affected_row).get(i).getHealth() - 1);
-                if (arena.getMap().get(affected_row).get(i).getHealth() <= 0) {
-                    arena.getMap().get(affected_row).remove(i);
+            for (int i = 0; i < arena.getMap().get(affectedrow).size(); i++) {
+                arena.getMap().get(affectedrow).get(i).setHealth(arena.getMap()
+                        .get(affectedrow).get(i).getHealth() - 1);
+                if (arena.getMap().get(affectedrow).get(i).getHealth() <= 0) {
+                    arena.getMap().get(affectedrow).remove(i);
                     i--;
                 }
             }
-            if (affected_row < 2){
+            if (affectedrow < 2) {
                 p1.setMana(p1.getMana() - card.getMana());
-            }else {
+            } else {
                 p2.setMana(p2.getMana() - card.getMana());
             }
         }
 
         if (card.getName().equals("Winterfell")) {
-            for (int i = 0; i < arena.getMap().get(affected_row).size(); i++) {
-                arena.getMap().get(affected_row).get(i).frozen = 1;
+            for (int i = 0; i < arena.getMap().get(affectedrow).size(); i++) {
+                arena.getMap().get(affectedrow).get(i).setFrozen(1);
             }
-            if (affected_row < 2){
+            if (affectedrow < 2) {
                 p1.setMana(p1.getMana() - card.getMana());
-            }else {
+            } else {
                 p2.setMana(p2.getMana() - card.getMana());
             }
         }
 
         if (card.getName().equals("Heart Hound")) {
-            if (arena.getMap().get(3 - affected_row).size() != 5) {
-                int max_health = 0;
-                int index_max_health = -1;
-                for (int i = 0; i < arena.getMap().get(affected_row).size(); i++) {
-                    if (max_health < arena.getMap().get(affected_row).get(i).getHealth()) {
-                        max_health = arena.getMap().get(affected_row).get(i).getHealth();
-                        index_max_health = i;
+            if (arena.getMap().get(2 + 1 - affectedrow).size() != (2 * 2 + 1)) {
+                int maxhealth = 0;
+                int indexmaxhealth = -1;
+                for (int i = 0; i < arena.getMap().get(affectedrow).size(); i++) {
+                    if (maxhealth < arena.getMap().get(affectedrow).get(i).getHealth()) {
+                        maxhealth = arena.getMap().get(affectedrow).get(i).getHealth();
+                        indexmaxhealth = i;
                     }
                 }
-                arena.getMap().get(3 - affected_row).add(arena.getMap().get(affected_row).get(index_max_health));
-                arena.getMap().get(affected_row).remove(index_max_health);
-                if (affected_row < 2){
+                arena.getMap().get(2 + 1  - affectedrow).add(arena.getMap()
+                        .get(affectedrow).get(indexmaxhealth));
+                arena.getMap().get(affectedrow).remove(indexmaxhealth);
+                if (affectedrow < 2) {
                     p1.setMana(p1.getMana() - card.getMana());
-                }else {
+                } else {
                     p2.setMana(p2.getMana() - card.getMana());
                 }
             }
