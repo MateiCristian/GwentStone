@@ -8,6 +8,10 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import checker.CheckerConstants;
 import fileio.Input;
+import implement.AddDeck;
+import implement.AddPojocoordinates;
+import implement.Coord;
+import implement.UseEnvironment;
 
 import java.util.Collections;
 import java.io.File;
@@ -26,10 +30,17 @@ import static implement.UseHeroAbility.useHeroAbility;
 /**
  * The entry point to this homework. It runs the checker that tests your implentation.
  */
+
 public final class Main {
     /**
      * for coding style
      */
+    //Declaring final variables for checkstyle
+    static final int int30 = 30;
+    static final int int10 = 10;
+    static final int int5 = 5;
+    static final int int4 = 4;
+    static final int int3 = 3;
     private Main() {
     }
 
@@ -80,16 +91,19 @@ public final class Main {
         ArrayNode output = objectMapper.createArrayNode();
 
         //TODO add here the entry point to your implementation
+        //Declaring a game arena
         Arena arena = new Arena();
         for (int k = 0; k < 2 * 2; k++) {
             arena.getMap().add(new ArrayList<>());
         }
+        //Numbers of victories
         int player1wins = 0;
         int player2wins = 0;
 
         for (int i = 0; i < inputData.getGames().size(); i++) {
-            int nrrounds = 0;
-            int nrturs = 1;
+            int nrrounds = 0; //number of rounds played
+            int nrturs = 1; //number of turns played
+            //Declaring and setting values for player1
             Playerv2 player1 = new Playerv2();
             int idxplayer1 = inputData.getGames().get(i).getStartGame().getPlayerOneDeckIdx();
             player1.setNrCardsInDeck(inputData.getPlayerOneDecks().getNrCardsInDeck());
@@ -98,8 +112,9 @@ public final class Main {
                     inputData.getGames().get(i).getStartGame().getPlayerOneHero().getName(),
                     inputData.getGames().get(i).getStartGame().getPlayerOneHero().getColors(),
                     inputData.getGames().get(i).getStartGame().getPlayerOneHero()
-                            .getDescription(), 30));
+                            .getDescription(), int30));
 
+            //Declaring and setting values for player1
             Playerv2 player2 = new Playerv2();
             player2.setNrCardsInDeck(inputData.getPlayerOneDecks().getNrCardsInDeck());
             int idxplayer2 = inputData.getGames().get(i).getStartGame().getPlayerTwoDeckIdx();
@@ -108,32 +123,38 @@ public final class Main {
                     inputData.getGames().get(i).getStartGame().getPlayerTwoHero().getName(),
                     inputData.getGames().get(i).getStartGame().getPlayerTwoHero().getColors(),
                     inputData.getGames().get(i).getStartGame().getPlayerTwoHero()
-                            .getDescription(), 30));
+                            .getDescription(), int30));
 
             player1.setMana(1);
             player2.setMana(1);
 
             int startingplayer = inputData.getGames().get(i).getStartGame().getStartingPlayer();
             int seed = inputData.getGames().get(i).getStartGame().getShuffleSeed();
-
+            //Setting decks for players
             AddDeck.adddeck(player1, inputData, idxplayer1, 1);
             AddDeck.adddeck(player2, inputData, idxplayer2, 2);
 
             Collections.shuffle(player1.getDeck(), new Random(seed));
             Collections.shuffle(player2.getDeck(), new Random(seed));
-
+            //Setting hands cards for players
             player1.getHand().add(player1.getDeck().get(0));
             player1.getDeck().remove(0);
 
             player2.getHand().add(player2.getDeck().get(0));
             player2.getDeck().remove(0);
 
+
             for (int j = 0; j < inputData.getGames().get(i).getActions().size(); j++) {
+                //Obtain a command
                 String command = inputData.getGames().get(i).getActions().get(j).getCommand();
+                //Parsing the command by its name
+
                 if (command.equals("getPlayerDeck")) {
                     int playerid = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
+                    //Creating deep copy for output
                     Playerv2 cplayer1 = new Playerv2(player1);
                     Playerv2 cplayer2 = new Playerv2(player2);
+                    //Creating the output
                     if (playerid == 1) {
                         output.addObject().put("command", "getPlayerDeck")
                                 .put("playerIdx", playerid)
@@ -144,7 +165,9 @@ public final class Main {
                                 .putPOJO("output", cplayer2.getDeck());
                     }
                 }
+
                 if (command.equals("getPlayerHero")) {
+                    //Creating deep copy for output
                     Playerv2 cplayer1 = new Playerv2(player1);
                     Playerv2 cplayer2 = new Playerv2(player2);
                     int heroidx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
@@ -158,14 +181,17 @@ public final class Main {
                                 .putPOJO("output", cplayer2.getHero());
                     }
                 }
+
                 if (command.equals("getPlayerTurn")) {
                     output.addObject().put("command", "getPlayerTurn")
                             .put("output", startingplayer);
                 }
+
                 if (command.equals("endPlayerTurn")) {
                     nrrounds++;
                     if (nrrounds % 2 == 0) {
                         nrturs++;
+                        //Adding cards in hand
                         if (player1.getDeck().size() != 0) {
                             player1.getHand().add(player1.getDeck().get(0));
                             player1.getDeck().remove(0);
@@ -174,16 +200,18 @@ public final class Main {
                             player2.getHand().add(player2.getDeck().get(0));
                             player2.getDeck().remove(0);
                         }
-                        if (nrturs >= 10) {
-                            player1.setMana(player1.getMana() + 10);
-                            player2.setMana(player2.getMana() + 10);
+                        //Setting mana for players
+                        if (nrturs >= int10) {
+                            player1.setMana(player1.getMana() + int10);
+                            player2.setMana(player2.getMana() + int10);
                         } else {
                             player1.setMana(player1.getMana() + nrturs);
                             player2.setMana(player2.getMana() + nrturs);
                         }
                     }
+                    //Resetting frozen cards and attacked tur for both players
                     if (startingplayer == 1) {
-                        for (int l = 2; l < 4; l++) {
+                        for (int l = 2; l < int4; l++) {
                             for (int c = 0; c < arena.getMap().get(l).size(); c++) {
                                 arena.getMap().get(l).get(c).setFrozen(0);
                                 arena.getMap().get(l).get(c).setAttackedtur(0);
@@ -203,6 +231,7 @@ public final class Main {
                     }
 
                 }
+
                 if (command.equals("placeCard")) {
                     int handidx = inputData.getGames().get(i).getActions().get(j).getHandIdx();
                     if (startingplayer == 1) {
@@ -214,14 +243,17 @@ public final class Main {
                                             "Cannot place environment card on table.")
                                     .put("handIdx", handidx);
                         } else {
+                            //Testing if player has enough mana
                             if (player1.getMana() >= player1.getHand().get(handidx).getMana()) {
+                                //Testing cards by name to know where must be placed
                                 if (player1.getHand().get(handidx).getName().equals("The Ripper")
                                         || player1.getHand().get(handidx).getName().equals("Miraj")
                                         || player1.getHand().get(handidx).getName()
                                         .equals("Goliath")
                                         || player1.getHand().get(handidx).getName()
                                         .equals("Warden")) {
-                                    if (arena.getMap().get(2).size() < 5) {
+                                    //If it is enough space on table
+                                    if (arena.getMap().get(2).size() < int5) {
                                         arena.getMap().get(2).add((Minion) player1.getHand()
                                                 .get(handidx));
                                         player1.setMana(player1.getMana() - player1.getHand()
@@ -234,8 +266,9 @@ public final class Main {
                                                 .put("handIdx", handidx);
                                     }
                                 } else {
-                                    if (arena.getMap().get(3).size() < 5) {
-                                        arena.getMap().get(3).add((Minion) player1.getHand()
+                                    //If it is enough space on table
+                                    if (arena.getMap().get(int3).size() < int5) {
+                                        arena.getMap().get(int3).add((Minion) player1.getHand()
                                                 .get(handidx));
                                         player1.setMana(player1.getMana() - player1.getHand()
                                                 .get(handidx).getMana());
@@ -255,6 +288,7 @@ public final class Main {
                             }
                         }
                     }
+                    //Same thing for player 2
                     if (startingplayer == 2) {
                         if (player2.getHand().get(handidx).getName().equals("Firestorm")
                                 || player2.getHand().get(handidx).getName().equals("Winterfell")
@@ -271,7 +305,7 @@ public final class Main {
                                         .equals("Goliath")
                                         || player2.getHand().get(handidx).getName()
                                         .equals("Warden")) {
-                                    if (arena.getMap().get(1).size() < 5) {
+                                    if (arena.getMap().get(1).size() < int5) {
                                         arena.getMap().get(1).add((Minion) player2.getHand()
                                                 .get(handidx));
                                         player2.setMana(player2.getMana() - player2.getHand()
@@ -284,7 +318,7 @@ public final class Main {
                                                 .put("handIdx", handidx);
                                     }
                                 } else {
-                                    if (arena.getMap().get(0).size() < 5) {
+                                    if (arena.getMap().get(0).size() < int5) {
                                         arena.getMap().get(0).add((Minion) player2.getHand()
                                                 .get(handidx));
                                         player2.setMana(player2.getMana() - player2.getHand()
@@ -306,25 +340,30 @@ public final class Main {
                         }
                     }
                 }
+
                 if (command.equals("getCardsInHand")) {
                     ArrayList<Cards> newarray = new ArrayList<>();
                     int playeridx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
                     if (playeridx == 1) {
+                        //For each cards testing if it is environment or minion
                         for (int k = 0; k < player1.getHand().size(); k++) {
                             if (player1.getHand().get(k).getName().equals("Firestorm")
                                     || player1.getHand().get(k).getName().equals("Winterfell")
                                     || player1.getHand().get(k).getName().equals("Heart Hound")) {
+                                //Creating depp copy for environment card
                                 Environment newenv = new Environment(player1.getHand().get(k)
                                         .getMana(), player1.getHand().get(k).getName(),
                                         player1.getHand().get(k).getColors(),
                                         player1.getHand().get(k).getDescription());
                                 newarray.add(newenv);
                             } else {
+                                //Creating deep copy for minion card
                                 Minion newmin = new Minion((Minion) player1.getHand().get(k));
                                 newarray.add(newmin);
                             }
                         }
                     } else {
+                        //Same thing but for player 2
                         for (int k = 0; k < player2.getHand().size(); k++) {
                             if (player2.getHand().get(k).getName().equals("Firestorm")
                                     || player2.getHand().get(k).getName().equals("Winterfell")
@@ -344,6 +383,7 @@ public final class Main {
                             .put("playerIdx", playeridx)
                             .putPOJO("output", newarray);
                 }
+
                 if (command.equals("getPlayerMana")) {
                     int playeridx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
                     Playerv2 cplayer1 = new Playerv2(player1);
@@ -358,7 +398,9 @@ public final class Main {
                                 .putPOJO("output", cplayer2.getMana());
                     }
                 }
+
                 if (command.equals("getCardsOnTable")) {
+                    //Creating a deep copy for game arena
                     Arena newarena = new Arena();
                     newarena.setMap(new ArrayList<>());
                     for (int k = 0; k < arena.getMap().size(); k++) {
@@ -372,6 +414,7 @@ public final class Main {
                     output.addObject().put("command", "getCardsOnTable")
                             .putPOJO("output", newarena.getMap());
                 }
+
                 if (command.equals("getEnvironmentCardsInHand")) {
                     int playeridx = inputData.getGames().get(i).getActions().get(j).getPlayerIdx();
                     ArrayList<Environment> newenvironment = new ArrayList<>();
@@ -396,25 +439,29 @@ public final class Main {
                             .put("playerIdx", playeridx).putPOJO("output",
                                     newenvironment);
                 }
+
                 if (command.equals("useEnvironmentCard")) {
                     int handidx = inputData.getGames().get(i).getActions().get(j).getHandIdx();
                     int affectedrow = inputData.getGames().get(i).getActions().get(j)
                             .getAffectedRow();
                     if (startingplayer == 1) {
+                        //Testing if it is an environment card
                         if (player1.getHand().get(handidx).getName().equals("Firestorm")
                                 || player1.getHand().get(handidx).getName().equals("Winterfell")
                                 || player1.getHand().get(handidx).getName().equals("Heart Hound")) {
+                            //Testing if player 1 has enough mana to use it
                             if (player1.getMana() >= player1.getHand().get(handidx).getMana()) {
                                 if (affectedrow == 0 || affectedrow == 1) {
                                     if (player1.getHand().get(handidx).getName()
                                             .equals("Heart Hound")
-                                            && arena.getMap().get(3 - affectedrow).size() == 5) {
+                                            && arena.getMap().get(int3 - affectedrow).size() == int5) {
                                         output.addObject().put("affectedRow", affectedrow)
                                                 .put("command", "useEnvironmentCard")
                                                 .put("error", "Cannot steal enemy card"
                                                         + " since the player's row is full.")
                                                 .put("handIdx", handidx);
                                     } else {
+                                        //Creating a deep copy
                                         Environment newenvironment = new Environment(player1
                                                 .getHand().get(handidx).getMana(),
                                                 player1.getHand().get(handidx).getName(),
@@ -446,15 +493,16 @@ public final class Main {
                                     .put("handIdx", handidx);
                         }
                     }
+                    //Same thing for player 2
                     if (startingplayer == 2) {
                         if (player2.getHand().get(handidx).getName().equals("Firestorm")
                                 || player2.getHand().get(handidx).getName().equals("Winterfell")
                                 || player2.getHand().get(handidx).getName().equals("Heart Hound")) {
                             if (player2.getMana() >= player2.getHand().get(handidx).getMana()) {
-                                if (affectedrow == 2 || affectedrow == 3) {
+                                if (affectedrow == 2 || affectedrow == int3) {
                                     if (player2.getHand().get(handidx).getName()
                                             .equals("Heart Hound")
-                                            && arena.getMap().get(3 - affectedrow).size() == 5) {
+                                            && arena.getMap().get(int3 - affectedrow).size() == int5) {
                                         output.addObject().put("affectedRow", affectedrow)
                                                 .put("command", "useEnvironmentCard")
                                                 .put("error", "Cannot steal enemy card"
@@ -492,6 +540,7 @@ public final class Main {
                         }
                     }
                 }
+
                 if (command.equals("getCardAtPosition")) {
                     int row = inputData.getGames().get(i).getActions().get(j).getX();
                     int column = inputData.getGames().get(i).getActions().get(j).getY();
@@ -515,6 +564,7 @@ public final class Main {
                         }
                     }
                 }
+
                 if (command.equals("getFrozenCardsOnTable")) {
                     ArrayList<Minion> newarray = new ArrayList<Minion>();
                     for (int l = 0; l < arena.getMap().size(); l++) {
@@ -527,6 +577,7 @@ public final class Main {
                     output.addObject().put("command", "getFrozenCardsOnTable")
                             .putPOJO("output", newarray);
                 }
+
                 if (command.equals("cardUsesAttack")) {
                     int xattacker = inputData.getGames().get(i).getActions().get(j)
                             .getCardAttacker().getX();
@@ -661,9 +712,11 @@ public final class Main {
                     }
 
                 }
+
                 if (command.equals("cardUsesAbility")) {
                     cardUsesAbility(inputData, output, arena, i, j);
                 }
+
                 if (command.equals("useAttackHero")) {
                     int x = useAttackHero(inputData, output, arena, i, j, player1, player2);
                     if (x == 1) {
@@ -673,6 +726,7 @@ public final class Main {
                         player2wins++;
                     }
                 }
+
                 if (command.equals("useHeroAbility")) {
                     int affectedrow = inputData.getGames().get(i).getActions().get(j)
                             .getAffectedRow();
@@ -682,20 +736,23 @@ public final class Main {
                         useHeroAbility(inputData, output, arena, affectedrow, player2, 2);
                     }
                 }
+
                 if (command.equals("getPlayerOneWins")) {
                     output.addObject().put("command", "getPlayerOneWins")
                             .put("output", player1wins);
                 }
+
                 if (command.equals("getPlayerTwoWins")) {
                     output.addObject().put("command", "getPlayerTwoWins")
                             .put("output", player2wins);
                 }
+
                 if (command.equals("getTotalGamesPlayed")) {
                     output.addObject().put("command", "getTotalGamesPlayed")
                             .put("output", player1wins + player2wins);
                 }
             }
-            for (int c = 0; c < 4; c++) {
+            for (int c = 0; c < int4; c++) {
                 arena.getMap().get(c).clear();
             }
         }

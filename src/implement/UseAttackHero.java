@@ -1,8 +1,6 @@
 package implement;
 
-import classes.AddPojoattacker;
 import classes.Arena;
-import classes.Coord;
 import classes.Playerv2;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import fileio.Input;
@@ -70,12 +68,10 @@ public final class UseAttackHero {
                     AddPojoattacker clas = new AddPojoattacker("useAttackHero",
                             "Attacked card is not of type 'Tank'.", coordinatesattacker);
                     output.addPOJO(clas);
-                    verify = 0;
                 } else {
                     if (xattacker < 2) {
                         player1.getHero().setHealth(player1.getHero().getHealth()
                                 - arena.getMap().get(xattacker).get(yattacker).getAttackDamage());
-                        verify = 0;
                         arena.getMap().get(xattacker).get(yattacker).setAttackedtur(1);
                         if (player1.getHero().getHealth() <= 0) {
                             output.addObject().put("gameEnded",
@@ -85,7 +81,6 @@ public final class UseAttackHero {
                     } else {
                         player2.getHero().setHealth(player2.getHero().getHealth()
                                 - arena.getMap().get(xattacker).get(yattacker).getAttackDamage());
-                        verify = 0;
                         arena.getMap().get(xattacker).get(yattacker).setAttackedtur(1);
                         if (player2.getHero().getHealth() <= 0) {
                             output.addObject().put("gameEnded",

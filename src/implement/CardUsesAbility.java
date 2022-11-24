@@ -1,8 +1,6 @@
 package implement;
 
 import classes.Arena;
-import classes.Coord;
-import classes.AddPojocoordinates;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import fileio.Input;
 
